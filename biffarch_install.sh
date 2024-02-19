@@ -1,5 +1,5 @@
-
 #!/usr/bin/env bash
+set -e
 
 echo "Welcome To BiffJonas Arch installation"
 
@@ -13,17 +13,17 @@ if mountpoint -q "${BOOT}"; then
     exit 1
 fi
 
-echo "Please enter Root(/) paritition: (Should be about 4G)"
-read ROOT 
-if mountpoint -q "${ROOT}"; then
-    echo "Error: The specified root partition is already mounted."
-    exit 1
-fi
-
 echo "Please enter EFI(/boot/efi) paritition: (The really tiny one)"
 read EFI
 if mountpoint -q "${EFI}"; then
     echo "Error: The specified EFI partition is already mounted."
+    exit 1
+fi
+
+echo "Please enter Root(/) paritition: (Should be about 4G)"
+read ROOT 
+if mountpoint -q "${ROOT}"; then
+    echo "Error: The specified root partition is already mounted."
     exit 1
 fi
 
@@ -57,11 +57,11 @@ mkfs.fat -F 32 "${EFI}"
 
 
 # mount partitions
-mkdir -p /mnt/boot/efi
-mkdir -p /mnt/home
 mount "${ROOT}" /mnt
-mount "${BOOT}" /mnt/boot
+mkdir -p /mnt/boot/efi
 mount "${EFI}" /mnt/boot/efi
+mkdir -p /mnt/home
+mount "${BOOT}" /mnt/boot
 mount "${HOME}" /mnt/home
 
 echo "--------------------------------------"
@@ -85,9 +85,6 @@ echo "--------------------------------------"
 echo "-- Bootloader Installation  --"
 echo "--------------------------------------"
 
-grub-install "${MAIN}"
-grub-mkconfig -o /mnt/boot/grub/grub.cfg
-
 cat <<REALEND > /mnt/next.sh
 useradd -m $USER
 usermod -aG wheel,storage,power,audio $USER
@@ -110,6 +107,9 @@ cat <<EOF > /etc/hosts
 ::1			localhost
 127.0.1.1	arch.localdomain	arch
 EOF
+
+grub-install "${MAIN}"
+grub-mkconfig -o /mnt/boot/grub/grub.cfg
 
 echo "-------------------------------------------------"
 echo "Display and Audio Drivers"
