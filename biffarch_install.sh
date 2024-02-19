@@ -44,6 +44,7 @@ mkfs.fat -F 32 "${EFI}"
 mkdir -p /mnt/boot/efi
 mkdir -p /mnt/home
 mount "${ROOT}" /mnt
+mount "${BOOT}" /mnt/boot
 mount "${EFI}" /mnt/boot/efi
 mount "${HOME}" /mnt/home
 
@@ -69,7 +70,7 @@ echo "-- Bootloader Installation  --"
 echo "--------------------------------------"
 
 grub-install "${MAIN}"
-grub-mkconfig -o /boot/grub/grub.cfg
+grub-mkconfig -o /mnt/boot/grub/grub.cfg
 
 cat <<REALEND > /mnt/next.sh
 useradd -m $USER
