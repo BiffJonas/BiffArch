@@ -8,15 +8,31 @@ read MAIN
 
 echo "Please enter BOOT(/boot) paritition: (The tiny one)"
 read BOOT
-
-echo "Please enter EFI(/boot/efi) paritition: (The really tiny one)"
-read EFI
+if mountpoint -q "${BOOT}"; then
+    echo "Error: The specified boot partition is already mounted."
+    exit 1
+fi
 
 echo "Please enter Root(/) paritition: (Should be about 4G)"
 read ROOT 
+if mountpoint -q "${ROOT}"; then
+    echo "Error: The specified root partition is already mounted."
+    exit 1
+fi
+
+echo "Please enter EFI(/boot/efi) paritition: (The really tiny one)"
+read EFI
+if mountpoint -q "${EFI}"; then
+    echo "Error: The specified EFI partition is already mounted."
+    exit 1
+fi
 
 echo "Please enter home(/home) paritition: (The big one...)"
 read HOME
+if mountpoint -q "${HOME}"; then
+    echo "Error: The specified home partition is already mounted."
+    exit 1
+fi
 
 echo "Please enter your username"
 read USER 
