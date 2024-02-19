@@ -3,6 +3,9 @@
 
 echo "Welcome To BiffJonas Arch installation"
 
+echo "Please enter the Main Hardrive (sda, sdb, sdc)"
+read MAIN
+
 echo "Please enter BOOT(/boot) paritition: (The tiny one)"
 read BOOT
 
@@ -65,6 +68,8 @@ echo "--------------------------------------"
 echo "-- Bootloader Installation  --"
 echo "--------------------------------------"
 
+grub-install "${MAIN}"
+grub-mkconfig -o /boot/grub/grub.cfg
 
 cat <<REALEND > /mnt/next.sh
 useradd -m $USER
