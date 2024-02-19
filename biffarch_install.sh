@@ -44,8 +44,8 @@ mkfs.fat -F 32 "${EFI}"
 mkdir -p /mnt/boot/efi
 mkdir -p /mnt/home
 mount "${ROOT}" /mnt
-mount "${ROOT}" /mnt
 mount "${EFI}" /mnt/boot/efi
+mount "${HOME}" /mnt/home
 
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux BASE on Main Drive       --"
@@ -81,10 +81,8 @@ echo "-------------------------------------------------"
 echo "Setup Language to US and set locale"
 echo "-------------------------------------------------"
 sed -i 's/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
-sed -i 's/^#sw_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" >> /etc/locale.conf
-echo "LANG=sw_US.UTF-8" >> /etc/locale.conf
 
 ln -sf /usr/share/zoneinfo/Europe/Stockholm /etc/localtime
 hwclock --systohc
@@ -102,7 +100,7 @@ echo "-------------------------------------------------"
 
 pacman -S xorg pulseaudio --noconfirm --needed
 
-systemctl enable NetworkManager bluetooth
+systemctl enable NetworkManager
 
 #DESKTOP ENVIRONMENT
 if [[ $DESKTOP == '1' ]]
