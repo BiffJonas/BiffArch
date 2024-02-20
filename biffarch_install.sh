@@ -109,13 +109,19 @@ echo "-------------------------------------------------"
 echo "Display and Audio Drivers"
 echo "-------------------------------------------------"
 
-pacman -S xorg pulseaudio --noconfirm --needed
+pacman -S xorg pipewire pipewire-alsa pipewire-pulse
+systemctl start pipewire
+systemctl enable pipewire
+
 # Window manager
 pacman -S xorg-server xorg-xinit dmenu i3 alacritty --noconfirm --needed
 # Neovim dependencies
 pacman -S npm unzip python python-pip xclip --noconfirm --needed
 pacman -S python-pynvim
 npm install -g neovim
+
+#Developer Goodies
+pacman -S fzf rg jq tldr bat neofetch --noconfirm --needed
 
 systemctl enable NetworkManager
 
