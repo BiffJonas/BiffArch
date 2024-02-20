@@ -110,7 +110,12 @@ echo "Display and Audio Drivers"
 echo "-------------------------------------------------"
 
 pacman -S xorg pulseaudio --noconfirm --needed
-pacman -S xorg-server xorg-xinit dmenu i3 --noconfirm --needed
+# Window manager
+pacman -S xorg-server xorg-xinit dmenu i3 alacritty --noconfirm --needed
+# Neovim dependencies
+pacman -S npm unzip python python-pip xclip --noconfirm --needed
+pacman -S python-pynvim
+npm install -g neovim
 
 systemctl enable NetworkManager
 
