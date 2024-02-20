@@ -58,11 +58,12 @@ mkfs.fat -F 32 "${EFI}"
 
 # mount partitions
 mount "${ROOT}" /mnt
-mkdir -p /mnt/boot/efi
-mount "${EFI}" /mnt/boot/efi
-mkdir -p /mnt/home
-mount "${BOOT}" /mnt/boot
+mkdir /mnt/home
 mount "${HOME}" /mnt/home
+mkdir /mnt/boot
+mount "${BOOT}" /mnt/boot
+mkdir /mnt/boot/efi
+mount "${EFI}" /mnt/boot/efi
 
 echo "--------------------------------------"
 echo "-- INSTALLING Arch Linux BASE on Main Drive       --"
@@ -76,7 +77,7 @@ echo "--------------------------------------"
 echo "-- Setup Dependencies               --"
 echo "--------------------------------------"
 
-pacstrap /mnt networkmanager grub efibootmgr --noconfirm --needed
+pacstrap /mnt networkmanager grub efibootmgr bluez bluez-utils --noconfirm --needed
 
 # fstab
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -116,25 +117,9 @@ echo "Display and Audio Drivers"
 echo "-------------------------------------------------"
 
 pacman -S xorg pulseaudio --noconfirm --needed
+pacman -S xorg-server xorg-xinit dmenu i3 --noconfirm --needed
 
 systemctl enable NetworkManager
-
-#DESKTOP ENVIRONMENT
-if [[ $DESKTOP == '1' ]]
-then 
-    pacman -S gnome gdm --noconfirm --needed
-    systemctl enable gdm
-elif [[ $DESKTOP == '2' ]]
-then
-    pacman -S plasma sddm kde-applications --noconfirm --needed
-    systemctl enable sddm
-elif [[ $DESKTOP == '3' ]]
-then
-    pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter --noconfirm --needed
-    systemctl enable lightdm
-else
-    echo "You have choosen no bloat \"Happy Ending\""
-fi
 
 echo "-------------------------------------------------"
 echo "Install Complete, You can reboot now"
