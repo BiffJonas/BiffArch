@@ -40,13 +40,6 @@ read USER
 echo "Please enter your password"
 read PASSWORD 
 
-echo "Please choose Your Bloat"
-echo "1. GNOME"
-echo "2. KDE"
-echo "3. XFCE"
-echo "4. NoDesktop"
-read DESKTOP
-
 # make filesystems
 echo -e "\nCreating Filesystems...\n"
 
@@ -110,7 +103,7 @@ cat <<EOF > /etc/hosts
 EOF
 
 grub-install "${MAIN}"
-grub-mkconfig -o /mnt/boot/grub/grub.cfg
+grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "-------------------------------------------------"
 echo "Display and Audio Drivers"
